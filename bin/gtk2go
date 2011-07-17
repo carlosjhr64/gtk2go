@@ -1,0 +1,28 @@
+#!/usr/bin/env ruby
+require 'rubygems'
+gem 'gtk2applib', '~> 15.0'
+$help = {'-color'=>'c'}
+require 'gtk2applib'
+
+Gtk2AppLib::Lock.lock_mode # TODO Why do we need lock mode?
+program = Gtk2AppLib::Program.new( {
+        'name'		=> 'Ruby-Gnome GO',
+        'authors'	=> ['carlosjhr64@gmail.com'],
+        'website'	=> 'https://sites.google.com/site/gtk2applib/home/gtk2applib-applications/gtk2go',
+        'website-label'	=> 'Ruby-Gnome GO',
+        'license'	=> 'GPL',
+        'copyright'	=> '2011-03-23 08:54:26',
+        } )
+
+begin
+  require 'gtk2go'
+  program.window do |window|
+    sw = Gtk2AppLib::Widgets::ScrolledWindow.new(window)
+    board = Gtk2GO::Board.new(9,9,sw)
+    window.show_all
+  end
+rescue Exception
+  $!.puts_bang!
+ensure
+  program.finalize
+end
